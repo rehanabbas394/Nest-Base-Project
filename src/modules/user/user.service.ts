@@ -24,6 +24,13 @@ export class UserService {
   * 创建用户
   */
   async createUser(dto: CreateUserDto): Promise<User> {
+    // first user already exist or not
+    const isUser = await this.usersRepository.find({
+      where: { account: dto.account}
+    });
+    if(isUser){
+      return null
+    }
     const user = new User();
     user.name = dto.name;
     user.account = dto.account;
